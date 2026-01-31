@@ -251,12 +251,12 @@ const Index = () => {
                 Ready to Get Started?
               </h2>
               <p className="text-primary-foreground/80 mb-8 max-w-lg mx-auto">
-                Join organizations that trust FaceAttend for their attendance management
+                Join organizations that trust Attendrix for their attendance management
               </p>
               <Link to="/register">
                 <Button 
                   size="xl" 
-                  className="bg-white text-primary hover:bg-white/90 shadow-lg"
+                  className="bg-card text-primary hover:bg-card/90 shadow-lg"
                 >
                   Register Your Organization
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -270,7 +270,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-border/50">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          <p>© 2024 FaceAttend. Secure face recognition for modern organizations.</p>
+          <p>© 2024 Attendrix. Created by Udit Pandey. Secure face recognition for modern organizations.</p>
         </div>
       </footer>
     </div>
