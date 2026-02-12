@@ -36,7 +36,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="fixed inset-4 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-5xl md:max-h-[90vh] bg-card rounded-2xl border border-border/50 shadow-xl z-50 overflow-hidden"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-5xl max-h-[90vh] bg-card rounded-2xl border border-border/50 shadow-xl z-50 overflow-hidden"
           >
             {/* Close Button */}
             <Button
