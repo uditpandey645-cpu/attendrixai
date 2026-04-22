@@ -14,7 +14,97 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      attendance_records: {
+        Row: {
+          attendance_date: string
+          confidence: number
+          id: string
+          marked_at: string
+          profile_id: string
+        }
+        Insert: {
+          attendance_date?: string
+          confidence: number
+          id?: string
+          marked_at?: string
+          profile_id: string
+        }
+        Update: {
+          attendance_date?: string
+          confidence?: number
+          id?: string
+          marked_at?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_records_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      face_embeddings: {
+        Row: {
+          created_at: string
+          embedding: number[]
+          id: string
+          profile_id: string
+        }
+        Insert: {
+          created_at?: string
+          embedding: number[]
+          id?: string
+          profile_id: string
+        }
+        Update: {
+          created_at?: string
+          embedding?: number[]
+          id?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "face_embeddings_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          department: string | null
+          email: string
+          employee_id: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          email: string
+          employee_id: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          email?: string
+          employee_id?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
