@@ -1,14 +1,13 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  User, 
-  Camera, 
-  Upload, 
-  CheckCircle, 
+import {
+  User,
+  Camera,
+  Upload,
+  CheckCircle,
   ArrowRight,
-  ImagePlus,
   X,
-  Building
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,12 @@ import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/Navbar";
 import CameraView from "@/components/camera/CameraView";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  loadFaceModels,
+  getSingleFaceDescriptor,
+  loadImage,
+} from "@/lib/faceApi";
 
 const Register = () => {
   const [step, setStep] = useState(1);
@@ -27,7 +32,14 @@ const Register = () => {
   });
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [useCamera, setUseCamera] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    loadFaceModels().catch(() => {
+      toast.error("Failed to load face recognition models");
+    });
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,7 +63,7 @@ const Register = () => {
     toast.success("Photo captured successfully!");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1) {
       if (!formData.name || !formData.employeeId || !formData.email) {
@@ -59,16 +71,68 @@ const Register = () => {
         return;
       }
       setStep(2);
-    } else if (step === 2) {
+      return;
+    }
+
+    if (step === 2) {
       if (!capturedImage) {
         toast.error("Please capture or upload a photo");
         return;
       }
-      setStep(3);
-      // Simulate registration
-      setTimeout(() => {
+      setSubmitting(true);
+      try {
+        await loadFaceModels();
+        const img = await loadImage(capturedImage);
+        const descriptor = await getSingleFaceDescriptor(img);
+
+        if (!descriptor) {
+          toast.error("No face detected in the photo. Please use a clearer image.");
+          setSubmitting(false);
+          return;
+        }
+
+        // Insert profile
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .insert({
+            name: formData.name,
+            employee_id: formData.employeeId,
+            email: formData.email,
+            department: formData.department || null,
+          })
+          .select()
+          .single();
+
+        if (profileError) {
+          if (profileError.code === "23505") {
+            toast.error("Employee ID already registered");
+          } else {
+            toast.error(profileError.message);
+          }
+          setSubmitting(false);
+          return;
+        }
+
+        // Insert embedding
+        const { error: embError } = await supabase.from("face_embeddings").insert({
+          profile_id: profile.id,
+          embedding: Array.from(descriptor),
+        });
+
+        if (embError) {
+          toast.error("Failed to save face data: " + embError.message);
+          setSubmitting(false);
+          return;
+        }
+
         toast.success("Registration successful!");
-      }, 1500);
+        setStep(3);
+      } catch (err) {
+        console.error(err);
+        toast.error("Registration failed. Please try again.");
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
