@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Brain, Cpu, Shield, Award, Linkedin, Github, Mail } from "lucide-react";
+import { X, Brain, Cpu, Shield, Award, Linkedin, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import creatorImage from "@/assets/creator-udit-pandey.png";
 import faceScanImage from "@/assets/face-scan-tech.jpg";
@@ -20,14 +20,14 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
           />
 
           {/* Modal */}
@@ -36,7 +36,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-4xl max-h-[85vh] bg-card rounded-2xl border border-border/50 shadow-xl z-50 overflow-hidden"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-card rounded-2xl border border-border/50 shadow-xl overflow-hidden"
           >
             {/* Close Button */}
             <Button
@@ -98,15 +98,26 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
                     
                     {/* Social Links */}
                     <div className="flex gap-2 mt-3">
-                      <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
-                        <Linkedin className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
-                        <Github className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
-                        <Mail className="w-4 h-4" />
-                      </Button>
+                      <a
+                        href="https://www.linkedin.com/in/udit-pandey-b30191384"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="LinkedIn profile of Udit Pandey"
+                      >
+                        <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
+                          <Linkedin className="w-4 h-4" />
+                        </Button>
+                      </a>
+                      <a
+                        href="https://github.com/uditpandey645-cpu"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="GitHub profile of Udit Pandey"
+                      >
+                        <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
+                          <Github className="w-4 h-4" />
+                        </Button>
+                      </a>
                     </div>
                   </div>
 
@@ -177,7 +188,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
               </div>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );
