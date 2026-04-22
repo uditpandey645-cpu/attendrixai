@@ -378,11 +378,20 @@ const Register = () => {
                       variant="hero"
                       size="lg"
                       onClick={handleSubmit}
-                      disabled={!capturedImage}
+                      disabled={!capturedImage || submitting}
                       className="flex-1 gap-2"
                     >
-                      Complete Registration
-                      <ArrowRight className="w-5 h-5" />
+                      {submitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Processing face...
+                        </>
+                      ) : (
+                        <>
+                          Complete Registration
+                          <ArrowRight className="w-5 h-5" />
+                        </>
+                      )}
                     </Button>
                   </div>
                 </motion.div>
