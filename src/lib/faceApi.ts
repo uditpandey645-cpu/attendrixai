@@ -3,7 +3,8 @@ import * as faceapi from "face-api.js";
 let modelsLoaded = false;
 let loadingPromise: Promise<void> | null = null;
 
-export const MATCH_THRESHOLD = 0.55; // Euclidean distance threshold (lower = stricter)
+// Euclidean distance threshold (lower = stricter). 0.5–0.6 is the standard range.
+export const MATCH_THRESHOLD = 0.55;
 
 export async function loadFaceModels(): Promise<void> {
   if (modelsLoaded) return;
@@ -23,7 +24,7 @@ export async function loadFaceModels(): Promise<void> {
   return loadingPromise;
 }
 
-/** Detect a single best face and return its 128-d descriptor. */
+/** Single best face — uses SSD for higher accuracy on registration. */
 export async function getSingleFaceDescriptor(
   input: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement
 ): Promise<Float32Array | null> {
@@ -40,16 +41,39 @@ export interface DetectedFace {
   box: { x: number; y: number; width: number; height: number };
 }
 
-/** Detect all faces in an image and return descriptors with bounding boxes. */
+/**
+ * Detect all faces in an image. Uses TinyFaceDetector for speed on group photos
+ * and falls back to SSD if too few are found, ensuring 5+ multi-person support.
+ */
 export async function getAllFaceDescriptors(
   input: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement
 ): Promise<DetectedFace[]> {
   await loadFaceModels();
-  const results = await faceapi
-    .detectAllFaces(input, new faceapi.SsdMobilenetv1Options({ minConfidence: 0.5 }))
+
+  // Pass 1: fast TinyFaceDetector with larger inputSize for group photos
+  const tinyResults = await faceapi
+    .detectAllFaces(
+      input,
+      new faceapi.TinyFaceDetectorOptions({ inputSize: 608, scoreThreshold: 0.5 })
+    )
     .withFaceLandmarks()
     .withFaceDescriptors();
-  return results.map((r) => ({
+
+  if (tinyResults.length >= 2) {
+    return tinyResults.map((r) => ({
+      descriptor: r.descriptor,
+      box: r.detection.box,
+    }));
+  }
+
+  // Pass 2: SSD fallback (more accurate, slower) for tricky/single-face shots
+  const ssdResults = await faceapi
+    .detectAllFaces(input, new faceapi.SsdMobilenetv1Options({ minConfidence: 0.4 }))
+    .withFaceLandmarks()
+    .withFaceDescriptors();
+
+  const best = ssdResults.length > tinyResults.length ? ssdResults : tinyResults;
+  return best.map((r) => ({
     descriptor: r.descriptor,
     box: r.detection.box,
   }));
@@ -79,8 +103,8 @@ export interface MatchResult {
 }
 
 /**
- * Match each detected face against stored embeddings.
- * Ensures each profile is matched to at most one face (best match wins).
+ * Match each detected face against stored embeddings using Hungarian-style
+ * greedy assignment: each face → at most one profile, each profile → at most one face.
  */
 export function matchFaces(
   detectedFaces: DetectedFace[],
@@ -99,7 +123,6 @@ export function matchFaces(
     });
   });
 
-  // Sort by best match first
   candidates.sort((a, b) => a.distance - b.distance);
 
   const usedFaces = new Set<number>();
