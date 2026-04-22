@@ -29,8 +29,8 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <img src={attendrixLogo} alt="Attendrix AI Logo" className="w-10 h-10 rounded-xl object-contain" />
-              <span className="font-bold text-xl text-foreground">Attendrix</span>
+              <img src={attendrixLogo} alt="PresentX Logo" className="w-10 h-10 rounded-xl object-contain" />
+              <span className="font-bold text-xl text-foreground">PresentX</span>
             </Link>
 
             {/* Navigation Links */}
@@ -63,7 +63,7 @@ const Navbar = () => {
                 <Sparkles className="w-4 h-4" />
                 <span className="hidden sm:inline">Creator</span>
               </Button>
-              
+
               {/* Mobile Menu Button */}
               <div className="md:hidden">
                 <Button variant="ghost" size="icon">
@@ -76,9 +76,9 @@ const Navbar = () => {
       </motion.nav>
 
       {/* Creator Modal */}
-      <CreatorModal 
-        isOpen={isCreatorModalOpen} 
-        onClose={() => setIsCreatorModalOpen(false)} 
+      <CreatorModal
+        isOpen={isCreatorModalOpen}
+        onClose={() => setIsCreatorModalOpen(false)}
       />
     </>
   );

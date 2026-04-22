@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Brain, Cpu, Shield, Award, Linkedin, Github, Mail } from "lucide-react";
+import { X, Brain, Cpu, Shield, Award, Linkedin, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import creatorImage from "@/assets/creator-udit-pandey.png";
 import faceScanImage from "@/assets/face-scan-tech.jpg";
@@ -20,14 +20,14 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
           />
 
           {/* Modal */}
@@ -36,7 +36,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-4xl max-h-[85vh] bg-card rounded-2xl border border-border/50 shadow-xl z-50 overflow-hidden"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-card rounded-2xl border border-border/50 shadow-xl overflow-hidden"
           >
             {/* Close Button */}
             <Button
@@ -98,15 +98,26 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
                     
                     {/* Social Links */}
                     <div className="flex gap-2 mt-3">
-                      <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
-                        <Linkedin className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
-                        <Github className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
-                        <Mail className="w-4 h-4" />
-                      </Button>
+                      <a
+                        href="https://www.linkedin.com/in/udit-pandey-b30191384"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="LinkedIn profile of Udit Pandey"
+                      >
+                        <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
+                          <Linkedin className="w-4 h-4" />
+                        </Button>
+                      </a>
+                      <a
+                        href="https://github.com/uditpandey645-cpu"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="GitHub profile of Udit Pandey"
+                      >
+                        <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
+                          <Github className="w-4 h-4" />
+                        </Button>
+                      </a>
                     </div>
                   </div>
 
@@ -116,7 +127,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
                       <div className="flex-1">
                         <h3 className="font-semibold text-foreground mb-2">About</h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">
-                          Udit Pandey is a visionary technologist and the mastermind behind Attendrix — 
+                          Udit Pandey is a visionary technologist and the mastermind behind PresentX — 
                           a cutting-edge face recognition attendance system. With extensive expertise in 
                           artificial intelligence, computer vision, and biometric security, Udit has 
                           pioneered innovative solutions that revolutionize identity verification.
@@ -157,7 +168,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
 
                   {/* Technology Stats */}
                   <div className="border-t border-border/50 pt-4">
-                    <h3 className="font-semibold text-foreground mb-2 text-sm">The Technology Behind Attendrix</h3>
+                    <h3 className="font-semibold text-foreground mb-2 text-sm">The Technology Behind PresentX</h3>
                     <div className="grid grid-cols-3 gap-2 text-center">
                       <div className="p-2 rounded-lg bg-primary/5 border border-primary/20">
                         <div className="text-lg font-bold text-gradient">&lt;1s</div>
@@ -177,7 +188,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
               </div>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );
