@@ -29,8 +29,8 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <img src={attendrixLogo} alt="PresentX Logo" className="w-10 h-10 rounded-xl object-contain" />
-              <span className="font-bold text-xl text-foreground">PresentX</span>
+              <img src={attendrixLogo} alt="PresenX Logo" className="w-10 h-10 rounded-xl object-contain" />
+              <span className="font-bold text-xl text-foreground">PresenX</span>
             </Link>
 
             {/* Navigation Links */}

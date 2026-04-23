@@ -127,7 +127,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
                       <div className="flex-1">
                         <h3 className="font-semibold text-foreground mb-2">About</h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">
-                          Udit Pandey is a visionary technologist and the mastermind behind PresentX — 
+                          Udit Pandey is a visionary technologist and the mastermind behind PresenX — 
                           a cutting-edge face recognition attendance system. With extensive expertise in 
                           artificial intelligence, computer vision, and biometric security, Udit has 
                           pioneered innovative solutions that revolutionize identity verification.
@@ -168,7 +168,7 @@ const CreatorModal = ({ isOpen, onClose }: CreatorModalProps) => {
 
                   {/* Technology Stats */}
                   <div className="border-t border-border/50 pt-4">
-                    <h3 className="font-semibold text-foreground mb-2 text-sm">The Technology Behind PresentX</h3>
+                    <h3 className="font-semibold text-foreground mb-2 text-sm">The Technology Behind PresenX</h3>
                     <div className="grid grid-cols-3 gap-2 text-center">
                       <div className="p-2 rounded-lg bg-primary/5 border border-primary/20">
                         <div className="text-lg font-bold text-gradient">&lt;1s</div>
